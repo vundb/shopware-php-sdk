@@ -13,17 +13,17 @@ class RepositoryFactory
 
     private const RESOURCES_PATH = __DIR__ . '/../Resources/entity-mapping.json';
 
-    public static function createFromDefinition(EntityDefinition $definition, ?string $route = null): RepositoryInterface
+    public static function createFromDefinition(EntityDefinition $definition, ?string $route = null, array $config = []): RepositoryInterface
     {
         if (!$route) {
             $route =  str_replace('_', '-', $definition->getEntityName());
             $route = sprintf('/%s', $route);
         }
 
-        return new EntityRepository($definition->getEntityName(), $definition, $route, HydratorFactory::create());
+        return new EntityRepository($definition->getEntityName(), $definition, $route, $config, HydratorFactory::create());
     }
 
-    public static function create(string $entity, ?string $route = null): RepositoryInterface
+    public static function create(string $entity, ?string $route = null, array $config = []): RepositoryInterface
     {
         if (!$route) {
             $route = sprintf('/%s', str_replace('_', '-', $entity));
@@ -31,7 +31,7 @@ class RepositoryFactory
 
         $definition = self::getDefinition($entity);
 
-        return new EntityRepository($entity, $definition, $route, HydratorFactory::create());
+        return new EntityRepository($entity, $definition, $route, $config, HydratorFactory::create());
     }
 
     public static function setEntityMapping(array $mapping): void
@@ -43,7 +43,7 @@ class RepositoryFactory
     {
         self::$mapping = array_merge(self::$mapping, $mapping);
     }
-    
+
     public static function loadDefaultEntityMapping(): void
     {
         try {

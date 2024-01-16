@@ -44,10 +44,10 @@ class EntityRepository implements RepositoryInterface
 
     private EntityDefinition $definition;
 
-    public function __construct(string $entityName, EntityDefinition $definition, string $route, ?HydratorInterface $hydrator = null)
+    public function __construct(string $entityName, EntityDefinition $definition, string $route, array $config = [], ?HydratorInterface $hydrator = null)
     {
         $this->entityName = $entityName;
-        $this->httpClient = $this->httpClient ?? $this->createHttpClient();
+        $this->httpClient = $this->httpClient ?? $this->createHttpClient($config);
         $this->hydrator = $hydrator ?: HydratorFactory::create();
         $this->definition = $definition;
         $this->route = $route;
@@ -163,13 +163,11 @@ class EntityRepository implements RepositoryInterface
 
         $headers = ['fail-on-error' => true];
 
-        if (!\is_array($ids[array_key_first($ids)]))
-        {
+        if (!\is_array($ids[array_key_first($ids)])) {
             $data = array_map(function (string $id) {
                 return ['id' => $id];
             }, $ids);
-        } else
-        {
+        } else {
             $data = $ids;
         }
 

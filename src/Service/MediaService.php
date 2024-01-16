@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Vin\ShopwareSdk\Service;
 
@@ -58,7 +60,7 @@ class MediaService extends ApiService
         try {
             $response = $this->httpClient->post($this->getFullUrl($path), [
                 'headers' => $this->getBasicHeaders(),
-                'body' => json_encode([ 'fileName' => $fileName ]),
+                'body' => json_encode(['fileName' => $fileName]),
             ]);
 
             $contents = self::handleResponse($response->getBody()->getContents(), $response->getHeaders());

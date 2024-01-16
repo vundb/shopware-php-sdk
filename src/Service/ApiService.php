@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Vin\ShopwareSdk\Service;
 
@@ -16,9 +18,9 @@ class ApiService
     /**
      * @deprecated tag v2.0.0 - $context will be remove, use setContext method instead
      */
-    public function __construct(?Context $context = null, string $contentType = 'application/vnd.api+json')
+    public function __construct(?Context $context = null, string $contentType = 'application/vnd.api+json', array $config = [])
     {
-        $this->httpClient = $this->httpClient ?? $this->createHttpClient();
+        $this->httpClient = $this->httpClient ?? $this->createHttpClient($config);
         $this->context = $context;
         $this->contentType = $contentType;
     }
